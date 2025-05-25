@@ -1,0 +1,50 @@
+syntax = "proto3";
+
+package sensor;
+
+option go_package = "proto/sensor;sensorpb";
+
+
+service SensorReceiver {
+  rpc SendSensorData (SensorDataRequest) returns (SensorDataResponse);
+}
+
+service SensorDataService {
+  rpc GetSensorHistory (SensorHistoryRequest) returns (SensorHistoryResponse);
+  rpc GetLastSensorValues (SensorLastValuesRequest) returns (SensorLastValuesResponse);
+}
+
+message SensorDataRequest {
+  string greenhouse_id = 1;
+  string sensor_type = 2;
+  string sensor_id = 3;
+  float value = 4;
+  string timestamp = 5;
+}
+
+message SensorDataResponse {
+  string status = 1;
+}
+
+message SensorHistoryRequest {
+  string greenhouse_id = 1;
+}
+
+message SensorDataPoint {
+  string sensor_id = 1;
+  string sensor_type = 2;
+  float value = 3;
+  string timestamp = 4;
+}
+
+message SensorHistoryResponse {
+  repeated SensorDataPoint data = 1;
+}
+
+message SensorLastValuesRequest {
+  string greenhouse_id = 1;
+}
+
+message SensorLastValuesResponse {
+  repeated SensorDataPoint data = 1;
+}

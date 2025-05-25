@@ -1,0 +1,19 @@
+syntax = "proto3";
+
+package actuator;
+
+option go_package = "proto/actuator;actuatorpb";
+
+service ActuatorService {
+  rpc TriggerAction (TriggerRequest) returns (TriggerResponse);
+}
+
+message TriggerRequest {
+  string greenhouse_id = 1;
+  string component = 2;
+  string command = 3;
+}
+
+message TriggerResponse {
+  string status = 1;
+}

@@ -1,0 +1,250 @@
+syntax = "proto3";
+
+package user;
+option go_package = "proto/user;userpb";
+
+service UserService {
+  rpc CreateUser(CreateUserRequest) returns (UserResponse);
+  rpc GetUser(UserIdRequest) returns (UserResponse);
+  rpc UpdateUser(UpdateUserRequest) returns (UserEmpty);
+  rpc DeleteUser(UserIdRequest) returns (UserEmpty);
+
+  rpc UpdateAvatar(UpdateAvatarRequest) returns (UserEmpty);
+  rpc GetAvatar(UserIdRequest) returns (AvatarResponse);
+
+  rpc UpdateFcmToken(UpdateFcmTokenRequest) returns (UserEmpty);
+  rpc GetFcmToken(UserIdRequest) returns (FcmTokenResponse);
+
+  rpc CreateLocation(CreateLocationRequest) returns (Location);
+  rpc GetLocations(UserIdRequest) returns (LocationListResponse);
+  rpc UpdateLocation(UpdateLocationRequest) returns (UserEmpty);
+  rpc DeleteLocation(LocationIdRequest) returns (UserEmpty);
+
+  rpc CreateGreenhouse(CreateGreenhouseRequest) returns (Greenhouse);
+  rpc GetGreenhouses(GreenhouseListRequest) returns (GreenhouseListResponse);
+  rpc UpdateGreenhouse(UpdateGreenhouseRequest) returns (UserEmpty);
+  rpc DeleteGreenhouse(GreenhouseIdRequest) returns (UserEmpty);
+
+  rpc CreateThreshold(CreateThresholdRequest) returns (Threshold);
+  rpc GetThresholds(ThresholdRequest) returns (ThresholdResponse);
+  rpc UpdateThreshold(UpdateThresholdRequest) returns (UserEmpty);
+  rpc DeleteThreshold(ThresholdIdRequest) returns (UserEmpty);
+
+  rpc GetSettings(UserIdRequest) returns (SettingsResponse);
+  rpc UpdateSettings(UpdateSettingsRequest) returns (UserEmpty);
+
+  rpc GetUserInfoFromGreenhouse(UserInfoRequestFromGreenhouse) returns (UserInfoResponseFromGreenhouse);
+  rpc GetUserByEmail(EmailRequest) returns (UserResponse);
+
+  rpc CreateSensor(CreateSensorRequest) returns (Sensor);
+  rpc UpdateSensor(UpdateSensorRequest) returns (UserEmpty);
+  rpc DeleteSensor(SensorIdRequest) returns (UserEmpty);
+  rpc GetSensorsByGreenhouse(SensorListRequest) returns (SensorListResponse);
+
+  rpc GetSensor(SensorIdRequest) returns (Sensor);
+
+}
+
+message EmailRequest {
+  string email = 1;
+}
+message UserInfoRequestFromGreenhouse {
+  string greenhouse_id = 1;
+}
+
+message UserInfoResponseFromGreenhouse {
+  string user_id = 1;
+  string fcm_token = 2;
+  string avatar_url = 3;
+  string location_id = 4;
+  string location_name = 5;
+}
+
+message UserEmpty {}
+
+message UserIdRequest {
+  string user_id = 1;
+}
+
+message CreateUserRequest {
+  string name = 1;
+  string email = 2;
+  string avatar_url = 3;
+  string password_hash = 4;
+}
+
+message UserResponse {
+  string user_id = 1;
+  string name = 2;
+  string email = 3;
+  string fcm_token = 4;
+  string avatar_url = 5;
+  string password_hash = 6;
+}
+
+message UpdateUserRequest {
+  string user_id = 1;
+  string name = 2;
+  string email = 3;
+  string avatar_url = 4;
+}
+
+
+message UpdateAvatarRequest {
+  string user_id = 1;
+  string avatar_url = 2;
+}
+
+message AvatarResponse {
+  string avatar_url = 1;
+}
+
+message UpdateFcmTokenRequest {
+  string user_id = 1;
+  string fcm_token = 2;
+}
+
+message FcmTokenResponse {
+  string fcm_token = 1;
+}
+
+message Location {
+  string location_id = 1;
+  string user_id = 2;
+  string location_name = 3;
+}
+
+message CreateLocationRequest {
+  string user_id = 1;
+  string location_name = 2;
+}
+
+message UpdateLocationRequest {
+  string location_id = 1;
+  string location_name = 2;
+}
+
+message LocationIdRequest {
+  string location_id = 1;
+}
+
+message LocationListResponse {
+  repeated Location locations = 1;
+}
+
+message Greenhouse {
+  string greenhouse_id = 1;
+  string user_id = 2;
+  string location_id = 3;
+  string name = 4;
+}
+
+message CreateGreenhouseRequest {
+  string user_id = 1;
+  string location_id = 2;
+  string name = 3;
+}
+
+message UpdateGreenhouseRequest {
+  string greenhouse_id = 1;
+  string name = 2;
+  string location_id = 3;
+}
+
+message GreenhouseIdRequest {
+  string greenhouse_id = 1;
+}
+
+message GreenhouseListRequest {
+  string location_id = 1;
+}
+
+message GreenhouseListResponse {
+  repeated Greenhouse greenhouses = 1;
+}
+
+message Threshold {
+  string threshold_id = 1;
+  string greenhouse_id = 2;
+  string sensor_type = 3;
+  float min = 4;
+  float max = 5;
+}
+
+message CreateThresholdRequest {
+  string greenhouse_id = 1;
+  string sensor_type = 2;
+  float min = 3;
+  float max = 4;
+}
+
+message UpdateThresholdRequest {
+  string threshold_id = 1;
+  float min = 2;
+  float max = 3;
+}
+
+message ThresholdIdRequest {
+  string threshold_id = 1;
+}
+
+message ThresholdRequest {
+  string greenhouse_id = 1;
+  string sensor_type = 2;
+}
+
+message ThresholdResponse {
+  float min = 1;
+  float max = 2;
+}
+
+message SensorThreshold {
+  string sensor_type = 1;
+  float min = 2;
+  float max = 3;
+}
+
+message SettingsResponse {
+  bool sound_enabled = 1;
+  bool weather_notifications = 2;
+  bool sensor_failure_notifications = 3;
+  repeated SensorThreshold thresholds = 4;
+}
+
+message UpdateSettingsRequest {
+  string user_id = 1;
+  bool sound_enabled = 2;
+  bool weather_notifications = 3;
+  bool sensor_failure_notifications = 4;
+  repeated SensorThreshold thresholds = 5;
+}
+
+message Sensor {
+  string sensor_id = 1;
+  string greenhouse_id = 2;
+  string sensor_type = 3;
+  string name = 4;
+}
+
+message CreateSensorRequest {
+  string greenhouse_id = 1;
+  string sensor_type = 2;
+  string name = 3;
+}
+
+message UpdateSensorRequest {
+  string sensor_id = 1;
+  string name = 2;
+}
+
+message SensorIdRequest {
+  string sensor_id = 1;
+}
+
+message SensorListRequest {
+  string greenhouse_id = 1;
+}
+
+message SensorListResponse {
+  repeated Sensor sensors = 1;
+}

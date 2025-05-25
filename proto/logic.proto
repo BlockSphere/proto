@@ -1,0 +1,22 @@
+syntax = "proto3";
+
+package logic;
+
+option go_package = "proto/logic;logicpb";
+
+service LogicProcessor {
+  rpc ProcessSensorData (SensorTriggerRequest) returns (SensorTriggerResponse);
+}
+
+message SensorTriggerRequest {
+  string greenhouse_id = 1;
+  string sensor_type   = 2;
+  string sensor_id     = 3;
+  float value          = 4;
+  string timestamp     = 5;
+}
+
+message SensorTriggerResponse {
+  string action        = 1;
+  string message       = 2;
+}
